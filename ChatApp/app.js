@@ -28,7 +28,7 @@ app.use(express.methodOverride());
 app.use(app.router);
 app.use(express.static(path.join(__dirname, '/public')));
 
-db = mongoskin.db("mongodb://localhost:27017/chatApp", {
+db = mongoskin.db("mongodb://localhost:27017/ChatApp", {
 	w : 1,
 	'auto_reconnect': true,
 	'poolSize': 20
@@ -49,39 +49,25 @@ app.get('/', function(req, res){
 	
 	});
 
-app.get('/home', function(req, res) {
-	console.log('User Details: ' + req.param("username") + " " + req.param("password"));
-	res.render('home', {
-		title : 'Home Page',
-		"username":req.param("username"),
-		"password":req.param("password")
-		
-		});
-	});
+//app.get('/home', function(req, res) {
+//	console.log('User Details: ' + req.param("username") );
+//	res.render('home', {
+//		title : 'Home Page',
+//		"username":req.param("username")		
+//		});
+//	});
 
 app.post('/loginCheck', function(req, res) {
-		req.on('end', function() {
-			var paramstring = postdata.split("&");
-			var param = {};
-			for(var i=0; i<paramstring.length; i++) {
-				var b = paramstring[i].split("=");
-				param[b[0]] = b[1];
-			}
-
-			user.get(param['username'], param['password'], function(err, result) {
-				if(!err && result) {
-					req.session.user = {'authenticated': true, 'username': result.username};
-					res.redirect('/home');
-				} else {
-				}
-			});
-		});
-
-		var postdata = "";
-		req.on('data', function(postdataChunk){
-			postdata += postdataChunk;
-		});
+	console.log('Inside Login Check: ' + req.param("username") + " " + req.param("password"));
 	
+	user.get(req.param("username"), req.param("password"), function(err, result) {
+		if(!err && result) {
+			console.log('After DB call: ' + result.username);
+			res.render('home', {username:result.username});
+		} else {
+			res.redirect('/');
+		}
+	});
 });
 
 server.listen(app.get('port'), function(){

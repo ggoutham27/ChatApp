@@ -9,8 +9,10 @@ exports.create = function(username,password, cb) {
 	});
 }
 
-exports.get = function(username,password, cb) {
-	db.collection("user").findOne({"username":username}, function(err, result) {
+exports.get = function(name,password, cb) {
+	db.collection('user').findOne({username:name}, function(err, result) {
+		console.log('error'+err);
+		console.log('result'+result);
 		cb(err, result);
 	});
 }
