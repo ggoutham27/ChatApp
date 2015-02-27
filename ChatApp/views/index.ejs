@@ -1,10 +1,31 @@
 <% include header %>
 
+<script type="text/javascript">
+function onsubmitform()
+{
+	/* alert("Login");
+	alert(document.pressed); */
+  if(document.pressed == 'Login')
+  {
+// 	  alert("Login");
+	  document.loginForm.action ="loginCheck";
+// 	  alert(document.loginForm.action);
+  }
+  else
+  if(document.pressed == 'Register')
+  {
+	  document.loginForm.action ="register";
+// 	  alert(document.loginForm.action);
+  }
+  return true;
+}
+</script>
+
 <body>
   <section class="container">
     <div class="login">
       <h1>Login to Chat App</h1>
-      <form method="post" action="loginCheck">
+      <form name="loginForm" method="post" onsubmit="return onsubmitform();">
         <p><input type="text" name="username" value="" placeholder="Username"></p>
         <p><input type="password" name="password" value="" placeholder="Password"></p>
         <p class="remember_me">
@@ -13,7 +34,13 @@
             Remember me on this computer
           </label>
         </p>
-        <p class="submit"><input type="submit" name="commit" value="Login"></p>
+        <p class="submit"><input type="submit" name="commit" value="Login" onclick="document.pressed=this.value"></p>
+         <p class="join">
+          <label>
+            Wan't to Join with us?
+          </label>
+        </p>
+        <p class="submit"><input type="submit" name="register" value="Register" onclick="document.pressed=this.value"></p>
       </form>
     </div>
 
